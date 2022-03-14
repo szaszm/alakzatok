@@ -74,10 +74,12 @@ public:
 
 	void rajzol(SDL_Renderer* const renderer) const override {
 		const uint32_t szin = get_szin();
-		const int darabok_szama = 16;
-		SDL_Vertex csucsok[darabok_szama];
-		for (int i = 0; i < darabok_szama; ++i) {
-			const double szog = i * 2 * M_PI / darabok_szama;
+		// szabályos sokszöggel közelítés
+		const int csucsok_szama = sugar / 4;
+		std::vector<SDL_Vertex> csucsok;
+		csucsok.resize(csucsok_szama);
+		for (int i = 0; i < csucsok_szama; ++i) {
+			const double szog = i * 2 * M_PI / csucsok_szama;
 			const Pont eltolas(
 				static_cast<int>(sugar * cos(szog)),
 				static_cast<int>(sugar * sin(szog))
@@ -90,13 +92,15 @@ public:
 			csucsok[i].color.b = szin_kek(szin);
 			csucsok[i].color.a = szin_atlatszatlansag(szin);
 		}
-		int indexek[(darabok_szama - 2) * 3];
-		for (int i = 0; i < darabok_szama - 2; ++i) {
+		// háromszögekre felbontás
+		std::vector<int> indexek;
+		indexek.resize((csucsok_szama - 2) * 3);
+		for (int i = 0; i < indexek.size() / 3; ++i) {
 			indexek[i * 3] = 0;
 			indexek[i * 3 + 1] = i + 1;
 			indexek[i * 3 + 2] = i + 2;
 		}
-		SDL_RenderGeometry(renderer, NULL, csucsok, sizeof(csucsok)/sizeof(SDL_Vertex), indexek, sizeof(indexek)/sizeof(int));
+		SDL_RenderGeometry(renderer, NULL, csucsok.data(), csucsok.size(), indexek.data(), indexek.size());
 	}
 
 	void kiir() const override {
