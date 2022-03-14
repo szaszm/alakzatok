@@ -151,7 +151,7 @@ public:
 	}
 };
 
-int main() {
+int main(int argc, char** argv) {
 	// SDL inicializálása, siker esetén kilépés előtt SDL_Quit-et kell hívni
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf(stderr, "Nem sikerült inicializálni az SDL-t: %s\n", SDL_GetError());

@@ -3,7 +3,7 @@ project(alakzatok)
 set(CMAKE_CXX_STANDARD 11)
 include(FetchContent)
 
-option(SYSTEM_SDL2 "Use system SDL2" ON)
+option(SYSTEM_SDL2 "Use system SDL2" OFF)
 
 if(SYSTEM_SDL2)
 	find_package(SDL2)
